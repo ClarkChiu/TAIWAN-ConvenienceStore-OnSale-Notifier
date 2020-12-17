@@ -1,1 +1,1 @@
-# TAIWAN-ConvenienceStore-OnSale-Notifier
+# 台灣便利商店優惠通知
