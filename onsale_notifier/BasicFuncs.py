@@ -1,5 +1,6 @@
 import os
 import time
+import shutil
 import requests
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
@@ -61,11 +62,11 @@ class BasicFuncs(object):
         os.makedirs(self.image_path, exist_ok=True)
 
         for image_url in image_urls:
-            image_content = requests.get(image_url).content
             filename = f'./images/{image_url.split("/")[-1]}'
-            with open(filename, 'wb') as image:
-                image.write(image_content)
-            time.sleep(5)
+            with requests.get(image_url, stream=True) as r:
+                with open(filename, "wb") as f:
+                    r.raw.decode_content = True
+                    shutil.copyfileobj(r.raw, f)
 
     def create_telegram_send_conf(self):
         telegram_token = os.getenv('TELEGRAM_TOKEN')
