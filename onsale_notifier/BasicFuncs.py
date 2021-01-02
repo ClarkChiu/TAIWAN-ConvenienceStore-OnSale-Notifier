@@ -59,11 +59,19 @@ class BasicFuncs(object):
         return image_urls
 
     def image_downloader(self, image_urls):
+        headers = {
+            'user-agent': (
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) '
+                'AppleWebKit/537.36 (KHTML, like Gecko) '
+                'Chrome/39.0.2171.95 '
+                'Safari/537.36'
+            )
+        }
         os.makedirs(self.image_path, exist_ok=True)
 
         for image_url in image_urls:
             filename = f'./images/{image_url.split("/")[-1]}'
-            with requests.get(image_url, stream=True) as r:
+            with requests.get(image_url, headers=headers, stream=True) as r:
                 with open(filename, "wb") as f:
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
